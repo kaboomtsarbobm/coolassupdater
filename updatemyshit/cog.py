@@ -35,16 +35,23 @@ def load_my_packages() -> list[tuple[str, str, str]]:
     return found
 
 
-async def pip_install(spec: str) -> tuple[bool, str]:
-    if shutil.which("uv"):
-        cmd = ["uv", "pip", "install", "--python", sys.executable, "--upgrade", spec]
-    else:
-        cmd = [sys.executable, "-m", "pip", "install", "--upgrade", spec]
+async def _run(*cmd: str) -> tuple[bool, str]:
     proc = await asyncio.create_subprocess_exec(
         *cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.STDOUT
     )
     out, _ = await proc.communicate()
     return proc.returncode == 0, out.decode(errors="replace")[-300:]
+
+
+async def pip_install(spec: str) -> tuple[bool, str]:
+    if shutil.which("uv"):
+        return await _run("uv", "pip", "install", "--python", sys.executable, "--upgrade", spec)
+    ok, _ = await _run(sys.executable, "-m", "pip", "--version")
+    if not ok:
+        ok, _ = await _run(sys.executable, "-m", "ensurepip", "--upgrade")
+        if not ok:
+            return False, "no pip or uv available in this container"
+    return await _run(sys.executable, "-m", "pip", "install", "--upgrade", spec)
 
 
 class UpdateView(discord.ui.View):
