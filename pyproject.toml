@@ -6,6 +6,6 @@ description = "hi"
 license = "MIT"  # replace with your own license
 license-files = ["LICENSE"]
 authors = [
-    { name = "elmos world", email = "shhhhh" },
+    { name = "elmos world", email = "randomdex3@gmail.com" },
 ]
 readme = "README.md"
