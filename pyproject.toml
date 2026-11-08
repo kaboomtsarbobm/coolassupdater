@@ -1,13 +1,11 @@
 [project]
-name = "updatemyshit"
+name = "cool"
 version = "1.0.0"
-description = "yeah"
-requires-python = ">=3.12"
-dependencies = ["aiohttp"]
 
-[build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
-
-[tool.setuptools]
-packages = ["updatemyshit"]
+description = "hi"
+license = "MIT"  # replace with your own license
+license-files = ["LICENSE"]
+authors = [
+    { name = "elmos world", email = "shhhhh" },
+]
+readme = "README.md"
